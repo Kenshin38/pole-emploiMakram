@@ -3,9 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EmployeeRepository")
+ * @ApiResource()
  */
 class Employee
 {
@@ -13,21 +16,25 @@ class Employee
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("all_employees")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("all_employees")
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("all_employees")
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups("all_employees")
      */
     private $employement_date;
 
@@ -80,6 +87,11 @@ class Employee
     public function getJob(): ?Job
     {
         return $this->job;
+    }
+    public function setId(): ?int
+    {
+
+        return $this->id;
     }
 
     public function setJob(?Job $job): self
