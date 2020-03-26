@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,11 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Employee
 {
-    public function __construct()
-    {
-        $this->setEmployementDate(new \DateTime());
-        $this->childs = new ArrayCollection();
-    }
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -25,12 +19,12 @@ class Employee
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Firstname;
+    private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Lastname;
+    private $lastname;
 
     /**
      * @ORM\Column(type="date")
@@ -38,10 +32,9 @@ class Employee
     private $employement_date;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Job", inversedBy="employees")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Job")
      */
-    private $Employee;
+    private $job;
 
     public function getId(): ?int
     {
@@ -50,24 +43,24 @@ class Employee
 
     public function getFirstname(): ?string
     {
-        return $this->Firstname;
+        return $this->firstname;
     }
 
-    public function setFirstname(string $Firstname): self
+    public function setFirstname(string $firstname): self
     {
-        $this->Firstname = $Firstname;
+        $this->firstname = $firstname;
 
         return $this;
     }
 
     public function getLastname(): ?string
     {
-        return $this->Lastname;
+        return $this->lastname;
     }
 
-    public function setLastname(string $Lastname): self
+    public function setLastname(string $lastname): self
     {
-        $this->Lastname = $Lastname;
+        $this->lastname = $lastname;
 
         return $this;
     }
@@ -84,14 +77,14 @@ class Employee
         return $this;
     }
 
-    public function getEmployee(): ?Job
+    public function getJob(): ?Job
     {
-        return $this->Employee;
+        return $this->job;
     }
 
-    public function setEmployee(?Job $Employee): self
+    public function setJob(?Job $job): self
     {
-        $this->Employee = $Employee;
+        $this->job = $job;
 
         return $this;
     }

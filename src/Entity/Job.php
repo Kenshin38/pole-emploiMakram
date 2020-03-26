@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,17 +19,7 @@ class Job
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Title;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Employee", mappedBy="Employee", orphanRemoval=true)
-     */
-    private $employees;
-
-    public function __construct()
-    {
-        $this->employees = new ArrayCollection();
-    }
+    private $title;
 
     public function getId(): ?int
     {
@@ -40,43 +28,12 @@ class Job
 
     public function getTitle(): ?string
     {
-        return $this->Title;
+        return $this->title;
     }
 
-    public function setTitle(string $Title): self
+    public function setTitle(string $title): self
     {
-        $this->Title = $Title;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Employee[]
-     */
-    public function getEmployees(): Collection
-    {
-        return $this->employees;
-    }
-
-    public function addEmployee(Employee $employee): self
-    {
-        if (!$this->employees->contains($employee)) {
-            $this->employees[] = $employee;
-            $employee->setEmployee($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEmployee(Employee $employee): self
-    {
-        if ($this->employees->contains($employee)) {
-            $this->employees->removeElement($employee);
-            // set the owning side to null (unless already changed)
-            if ($employee->getEmployee() === $this) {
-                $employee->setEmployee(null);
-            }
-        }
+        $this->title = $title;
 
         return $this;
     }
