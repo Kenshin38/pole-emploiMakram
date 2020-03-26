@@ -30,7 +30,7 @@ class ApiEmployeeController extends AbstractController
     }
 
     /**
-     * @Route("/api/employees", name="api_employee_index", methods={"GET"})
+     * @Route("/employees", name="api_employee_index", methods={"GET"})
      */
     public function index()
     {
@@ -47,9 +47,25 @@ class ApiEmployeeController extends AbstractController
 
         return $response;
     }
+    /**
+     * @Route("/employees/{id}", name="api_employee_patch", methods={"GET"})
+     */
+    public function show(Request $request, Employee $employee)
+    {
+        $this->getDoctrine()->getRepository(Employee::class)->find('id');
+        
+
+        $manager = $this->getDoctrine()->getManager();
+        $manager->flush();
+        $data = $this->serializer->normalize($employee, null, ['groups' => 'all_jobs']);
+        $jsonContent = $this->serializer->serialize($data, 'json');
+        $response = new Response($jsonContent);
+        $response->headers->set('Content - Type', 'application / json');
+        return $response;
+    }
 
     /**
-     * @Route("/api/employees", name="api_employee_create", methods={"POST"})
+     * @Route("/employees", name="api_employee_create", methods={"POST"})
      */
     public function create(Request $request)
     {
@@ -78,29 +94,13 @@ class ApiEmployeeController extends AbstractController
          */
 
         $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($job);
+        $entityManager->persist($employee);
         $entityManager->flush();
         return new Response(null, 201);
     }
+
     /**
-     * @Route("api/employees/{id}", name="api_employee_patch", methods={"GET"})
-     */
-    public function show(Request $request, Employee $employee)
-    {
-        $id = $this->getDoctrine()->getRepository(Employee::class)->find('id');
-        $employee->setId($id);
-        
-        $manager = $this->getDoctrine()->getManager();
-        $manager->flush();
-        $data = $this->serializer->normalize($employee, null, ['groups' => 'all_jobs']);
-        $jsonContent = $this->serializer->serialize($data, 'json');
-        $response = new Response($jsonContent);
-        $response->headers->set('Content - Type', 'application / json');
-        return $response;
-        
-    }
-    /**
-     * @Route("api/employees/{job}/edit", name="api_employee_patch", methods={"POST"})
+     * @Route("/employees/{employee}", name="api_employee_patch", methods={"POST"})
      */
     public function update(Request $request, Employee $employee)
     {
@@ -112,7 +112,8 @@ class ApiEmployeeController extends AbstractController
         if (!empty($request->request->get('lastname'))) {
             $employee->setLastname($request->request->get('lastname'));
         }
-        if (!empty($date = new \DateTime($request->request->get('employement_date')))) {
+        if (!empty($request->request->get('employement_date'))) {
+            $date = new \DateTime($request->request->get('employement_date'));
             $employee->setEmployementDate($date);
         }
      
@@ -123,12 +124,13 @@ class ApiEmployeeController extends AbstractController
 
 
         $manager = $this->getDoctrine()->getManager();
+        
         $manager->flush();
 
         return new Response(null, 202);
     }
     /**
-     * @Route("api/employees/{employee}", name="api_employee_delete", methods={"DELETE"})
+     * @Route("/employees/{employee}", name="api_employee_delete", methods={"DELETE"})
      */
     public function delete(Request $request, employee $employee)
     {

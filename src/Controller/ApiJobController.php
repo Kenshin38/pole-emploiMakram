@@ -23,7 +23,7 @@ class ApiJobController extends AbstractController
         $this->serializer = new Serializer($normalizers, $encoders);
     }
     /**
-     * @Route("/api/jobs", name="api_job_index", methods={"GET"})
+     * @Route("/jobs", name="api_job_index", methods={"GET"})
      */
     public function index()
     {
@@ -42,12 +42,12 @@ class ApiJobController extends AbstractController
     }
 
     /**
-     * @Route("api/jobs/{id}", name="api_job_patch", methods={"GET"})
+     * @Route("/jobs/{id}", name="api_job_patch", methods={"GET"})
      */
     public function show(Request $request, Job $job)
     {
-        $id = $this->getDoctrine()->getRepository(Job::class)->find('id');
-        $job->setId($id);
+        $this->getDoctrine()->getRepository(Job::class)->find('id');
+       
 
 
         $manager = $this->getDoctrine()->getManager();
@@ -63,7 +63,7 @@ class ApiJobController extends AbstractController
 
 
     /**
-     * @Route("/api/jobs", name="api_job_create", methods={"POST"})
+     * @Route("/jobs", name="api_job_create", methods={"POST"})
      */
     public function create(Request $request)
     {
@@ -72,7 +72,7 @@ class ApiJobController extends AbstractController
          * On créée un restaurant en prenant les données de la requête
          */
         $job = new Job;
-        $job->setTitle($request->request->get('Title'));
+        $job->setTitle($request->request->get('title'));
 
         
     
@@ -91,7 +91,7 @@ class ApiJobController extends AbstractController
 
 
     /**
-     * @Route("api/jobs/{job}/edit", name="api_job_patch", methods={"POST"})
+     * @Route("/jobs/{job}", name="api_job_patch", methods={"POST"})
      */
     public function update(Request $request, Job $job)
     {
@@ -104,11 +104,12 @@ class ApiJobController extends AbstractController
 
         $manager = $this->getDoctrine()->getManager();
         $manager->flush();
+        
 
         return new Response(null, 202);
     }
     /**
-     * @Route("api/jobs/{job}", name="api_job_delete", methods={"DELETE"})
+     * @Route("/jobs/{job}", name="api_job_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Job $job)
     {

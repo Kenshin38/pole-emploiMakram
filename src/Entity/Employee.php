@@ -39,7 +39,7 @@ class Employee
     private $employement_date;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Job")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Job", cascade={"all"})
      */
     private $job;
 
@@ -88,11 +88,7 @@ class Employee
     {
         return $this->job;
     }
-    public function setId(): ?int
-    {
 
-        return $this->id;
-    }
 
     public function setJob(?Job $job): self
     {
