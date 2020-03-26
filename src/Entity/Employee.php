@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -9,6 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Employee
 {
+    public function __construct()
+    {
+        $this->setEmployementDate(new \DateTime());
+        $this->childs = new ArrayCollection();
+    }
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
