@@ -31,6 +31,12 @@ class Employee
      */
     private $employement_date;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Job", inversedBy="employees")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Employee;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -68,6 +74,18 @@ class Employee
     public function setEmployementDate(\DateTimeInterface $employement_date): self
     {
         $this->employement_date = $employement_date;
+
+        return $this;
+    }
+
+    public function getEmployee(): ?Job
+    {
+        return $this->Employee;
+    }
+
+    public function setEmployee(?Job $Employee): self
+    {
+        $this->Employee = $Employee;
 
         return $this;
     }
